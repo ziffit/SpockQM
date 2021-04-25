@@ -4,9 +4,9 @@ import de.fx.spockqm.modules.Bottomnavigation
 import de.fx.spockqm.modules.Topnavigation
 import geb.Page
 
-class KontaktPage extends Page {
+class WebAutomationMobileTestingPage extends Page {
     static url = ""
-    static at = { title == "Kontakt & Anfahrt | QualityMinds" }
+    static at = { title == "Web, Automation & Mobile Testing | QualityMinds" }
     static content = {
         maincontent { $("#main-content") }
         topnavigation { module Topnavigation}

@@ -31,13 +31,12 @@ class GebConfigHelper {
      */
     static createDriver() {
         def activeDriver = Objects.requireNonNullElse(System.getenv("driver.active"),"default")
-        println("===> activeDriver: $activeDriver")
         def headless = Boolean.valueOf(System.getProperty("driver.headless", "false"))
         def webdriver
         switch (activeDriver) {
             case "firefox":
                 webdriver = createFirefoxDriver(headless)
-                break;
+                break
             default:
                 webdriver = createChromeDriver(headless)
         }
