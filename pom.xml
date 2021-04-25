@@ -15,7 +15,7 @@
         <driver.active>chrome</driver.active>
         <driver.chrome>${project.basedir}/src/test/driver/chromedriverLinux89</driver.chrome>
         <driver.firefox>${project.basedir}/src/test/driver/geckodriverLinux0.29.1</driver.firefox>
-        <driver.headless>true</driver.headless>
+        <driver.headless>false</driver.headless>
 
         <asciidoctor.maven.plugin.version>2.1.0</asciidoctor.maven.plugin.version>
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
@@ -41,7 +41,7 @@
                     </execution>
                     <execution>
                         <id>call-groovy</id>
-                        <phase>verify</phase>
+                        <phase>post-integration-test</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
@@ -56,29 +56,40 @@
             <!-- Optional plugins for using Spock -->
             <!-- Only required if names of spec classes don't match default Surefire patterns (`*Test` etc.) -->
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
                     <includes>
                         <include>**/*Spec</include>
                     </includes>
-                    <reportNameSuffix>chrome</reportNameSuffix>
-                    <environmentVariables>
-                        <driver.active>chrome</driver.active>
-                    </environmentVariables>
                     <systemPropertyVariables>
                         <webdriver.chrome.driver>${driver.chrome}</webdriver.chrome.driver>
                         <webdriver.gecko.driver>${driver.firefox}</webdriver.gecko.driver>
                         <driver.headless>${driver.headless}</driver.headless>
-                        <com.athaydes.spockframework.report.outputDir>${build.directory}/spock-reports/chrome
-                        </com.athaydes.spockframework.report.outputDir>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>Chrome</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <skipExec>false</skipExec>
+                            <reportNameSuffix>chrome</reportNameSuffix>
+                            <environmentVariables>
+                                <driver.active>chrome</driver.active>
+                            </environmentVariables>
+                            <systemPropertyVariables>
+                                <com.athaydes.spockframework.report.outputDir>${build.directory}/spock-reports/chrome</com.athaydes.spockframework.report.outputDir>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>Firefox</id>
                         <goals>
-                            <goal>test</goal>
+                            <goal>integration-test</goal>
                         </goals>
                         <configuration>
                             <skip>false</skip>

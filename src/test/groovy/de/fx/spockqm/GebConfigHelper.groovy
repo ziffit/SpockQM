@@ -17,7 +17,6 @@ class GebConfigHelper {
 
     /**
      * Creates Driver-Specific Reports-Directory, and sets spock-reports System-Property for this directory.
-     * @return
      */
     static handleReportsDir(){
         def reportsDir = 'target/spock-reports/'+System.getenv("driver.active")
