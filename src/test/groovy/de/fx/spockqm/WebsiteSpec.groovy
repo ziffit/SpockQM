@@ -14,40 +14,54 @@ import java.awt.Color
 class WebsiteSpec extends AbstractSpec {
 
     def "Test Case 1"() {
-        when: "the URL www.qualityminds.de is opened,"
+        when: "(1) the URL www.qualityminds.de is opened,"
         go "http://www.qualityminds.de"
         activePage = page IndexPage
-        then: "the QualityMinds startpage is open."
+        then: "the QualityMinds indexpage is open."
         at IndexPage
+        report "1 - Index page"
 
-        when: "'Kontakt' at the top navigation is clicked,"
+        when: "(2) 'Kontakt' at the top navigation is clicked,"
         activePage = activePage.topnavigation.kontakt.click(KontaktPage)
         activePage = page KontaktPage
         then: "the Page 'Kontakt &  Anfahrt' is displayed."
         at KontaktPage
+        report "2 - Kontakt page"
 
-        expect: "that the page contains the email address 'hello@qualityminds.de'."
+        expect: "(3) that the page contains the email address 'hello@qualityminds.de'."
         activePage.maincontent.text() =~ /.*hello@qualityminds.de.*/
 
-        when: "'Kontakt & Anfahrt' in the bottom navigation is clicked,"
+        when: "(4) Navigate back to 'www.qualityminds.de'"
+        to IndexPage
+        activePage = page IndexPage
+        then: "the QualityMinds indexpage is displayed."
+        at IndexPage
+        report "4 - Index page"
+
+        when: "(5) 'Kontakt & Anfahrt' in the bottom navigation is clicked,"
         activePage.bottomnavigation.kontakt.click()
         then: "the Page 'Kontakt &  Anfahrt' is displayed."
         at KontaktPage
+        report "5 - Kontakt page"
+
+        //Step 6 is omitted. The Page-Object used in Step2 and Step5 is the same.
     }
 
     def "Test Case 2"() {
-        when: "the URL www.qualityminds.de is opened,"
+        when: "(1) the URL www.qualityminds.de is opened,"
         go "http://www.qualityminds.de"
         activePage = page IndexPage
-        then: "the QualityMinds startpage is open."
+        then: "the QualityMinds indexpage is open."
         at IndexPage
+        report "1 - Index page"
 
-        when: "'Portfolio' is hovered at the top navigation bar,"
+        when: "(2) 'Portfolio' is hovered at the top navigation bar,"
         hover activePage.topnavigation.portfolio
         then: "the submenu is displayed."
         activePage.topnavigation.portfolio_submenu.isDisplayed()
+        report "2 - Portfolio hovered"
 
-        when: "'Web, Automation & Mobile Testing' sub option is clicked,"
+        when: "(3,4) 'Web, Automation & Mobile Testing' sub option is clicked,"
         activePage.topnavigation.portfolio_automation.click()
         activePage = page WebAutomationMobileTestingPage
         then: "'Web, Automation & Mobile Testing' page is displayed"
@@ -55,47 +69,51 @@ class WebsiteSpec extends AbstractSpec {
         and: "'Portfolio' item of the top bar menu is highlighted (color is rgb(130, 168, 69, 1))."
         activePage.topnavigation.portfolio_link.css("color") ==~ /.*130, 186, 69.*/
         //regex is used, as chrome and firefox return slightly different string
+        report "3,4 - Portfolio page"
 
-        when: "Tab 'Mobile' in 'Web, Automation & Mobile Testing' is clicked,"
+        when: "(5) Tab 'Mobile' in 'Web, Automation & Mobile Testing' is clicked,"
         activePage.tab_mobile.click()
         then: "mobile section content is displayed"
         activePage.tab_mobile_content.displayed
         and: "'Mobile' is underlined in grey (border-bottom: 3px solid rgb(151, 151, 151))"
         activePage.tab_mobile.parent().css("border-bottom-color") ==~ /.*151, 151, 151.*/
         //regex is used, as chrome and firefox return slightly different string
-
         and: "'Flyer find the bug session'-button is displayed on the right."
         activePage.a_flyer.displayed
+        report "5 - Tab 'mobile'"
 
-        expect: "the download link for flyer is: 'https://qualityminds.de/app/uploads/2018/11/Find-The-Mobile-Bug-Session.pdf'"
+        expect: "(6) the download link for flyer is: 'https://qualityminds.de/app/uploads/2018/11/Find-The-Mobile-Bug-Session.pdf'"
         activePage.a_flyer.attr("href") == "https://qualityminds.de/app/uploads/2018/11/Find-The-Mobile-Bug-Session.pdf"
-
-        and: "the pdf is downloadable."
+        and: "(7) the pdf is downloadable."
         new String(downloadBytes(activePage.a_flyer.attr("href")) as byte[]).contains("PDF-1.7")
         //Apache PDFBox could be used to further test content
+        report "6,7 - Flyer"
     }
 
 
     def "Test Case 3"() {
-        when: "the URL www.qualityminds.de is opened,"
+        when: "(1) the URL www.qualityminds.de is opened,"
         go "http://www.qualityminds.de"
         activePage = page IndexPage
-        then: "the QualityMinds startpage is open."
+        then: "the QualityMinds indexpage is open."
         at IndexPage
+        report "1 - Index page"
 
-        when: "'Karriere' is clicked in the top navigation bar,"
+        when: "(2) 'Karriere' is clicked in the top navigation bar,"
         activePage.topnavigation.karriere.click()
         activePage = page KarrierePage
         then: "the 'Karriere' page is open."
         at KarrierePage
+        report "2 - Karriere page"
 
-        when: "button 'Bewirb Dich Jetzt!' is clicked,"
+        when: "(3) button 'Bewirb Dich Jetzt!' is clicked,"
         activePage.button_application.click()
         activePage = page KontaktformularPage
         then: "the application form is opened."
         at KontaktformularPage
+        report "3 - Application form"
 
-        when: "button 'Jetzt bewerben' is clicked,"
+        when: "(4,5) button 'Jetzt bewerben' is clicked,"
         activePage.button_submit.click()
         then: "the message is not submitted"
         at KontaktformularPage
@@ -104,27 +122,30 @@ class WebsiteSpec extends AbstractSpec {
         activePage.lastname_validation.displayed
         activePage.email_validation.displayed
         activePage.privacy_validation.displayed
+        report "4,5 - 4 validation messages"
 
-        when: "the fields 'Vorname' and 'Nachname' are filled,"
+        when: "(6) the fields 'Vorname' and 'Nachname' are filled,"
         activePage.firstname_input = "Hubert"
         activePage.lastname_input = "Hansen"
         then: "both fileds are filled."
         activePage.firstname_input.value() == "Hubert"
         activePage.lastname_input.value() == "Hansen"
+        report "6 - Inputs Firstname, Lastname"
 
-        when: "button 'Jetzt bewerben' is clicked,"
+        when: "(7,8) button 'Jetzt bewerben' is clicked,"
         activePage.button_submit.click()
         then: "the message is not submitted"
         at KontaktformularPage
         and: "validation messages for 2 fields (Email, Datenschutz) are displayed."
         activePage.email_validation.displayed
         activePage.privacy_validation.displayed
+        report "7,8 - Validation messages email, privacy"
 
-        when: "'E-Mail'-field is filled with an INVALID value,"
+        when: "(9) 'E-Mail'-field is filled with an INVALID value,"
         activePage.email_input = "INVALID VALUE"
         then: "the 'E-Mail'-field is filled."
         activePage.email_input.value() == "INVALID VALUE"
-        report("Email with invalid value")
+        report "9 - Email invalid input"
 
         when: "(10) button 'Jetzt bewerben' is clicked,"
         activePage.button_submit.click()
