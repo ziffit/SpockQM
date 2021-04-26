@@ -15,7 +15,7 @@
         <driver.active>chrome</driver.active>
         <driver.chrome>${project.basedir}/src/test/driver/chromedriverLinux89</driver.chrome>
         <driver.firefox>${project.basedir}/src/test/driver/geckodriverLinux0.29.1</driver.firefox>
-        <driver.headless>false</driver.headless>
+        <driver.headless>true</driver.headless>
 
         <asciidoctor.maven.plugin.version>2.1.0</asciidoctor.maven.plugin.version>
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
@@ -26,7 +26,9 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <source>11</source>
                     <target>11</target>
@@ -90,7 +92,7 @@
                                 <driver.active>chrome</driver.active>
                             </environmentVariables>
                             <systemPropertyVariables>
-                                <com.athaydes.spockframework.report.outputDir>${build.directory}/spock-reports/chrome</com.athaydes.spockframework.report.outputDir>
+                                <com.athaydes.spockframework.report.outputDir>${project.build.directory}/spock-reports/chrome</com.athaydes.spockframework.report.outputDir>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>
@@ -107,7 +109,7 @@
                                 <driver.active>firefox</driver.active>
                             </environmentVariables>
                             <systemPropertyVariables>
-                                <com.athaydes.spockframework.report.outputDir>${build.directory}/spock-reports/firefox</com.athaydes.spockframework.report.outputDir>
+                                <com.athaydes.spockframework.report.outputDir>${project.build.directory}/spock-reports/firefox</com.athaydes.spockframework.report.outputDir>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>
@@ -117,36 +119,12 @@
     </build>
 
     <dependencies>
-        <!--dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.5.14</version>
-            <type>pom</type>
-        </dependency-->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>2.5.14</version>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-ant</artifactId>
-            <version>2.5.14</version>
-        </dependency>
-        <!--dependency>
-            <groupId>com.aoe</groupId>
-            <artifactId>geb-spock-reports</artifactId>
-            <version>0.2.6</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.codehaus.groovy</groupId>
-                    <artifactId>groovy-all</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency-->
-        <!-- ## Dependencies taken from: https://github.com/spockframework/spock-example/blob/master/pom.xml -->
-        <!-- Mandatory dependencies for using Spock -->
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
@@ -161,45 +139,62 @@
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-chrome-driver</artifactId>
             <version>3.141.59</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-firefox-driver</artifactId>
             <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.gebish</groupId>
+            <artifactId>geb-core</artifactId>
+            <version>4.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.gebish</groupId>
             <artifactId>geb-spock</artifactId>
             <version>4.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <groupId>org.gebish</groupId>
+            <artifactId>geb-ast</artifactId>
+            <version>4.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.gebish</groupId>
+            <artifactId>geb-implicit-assertions</artifactId>
+            <version>4.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj-api</artifactId>
+            <version>2.4.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.asciidoctor</groupId>
             <artifactId>asciidoctorj</artifactId>
             <version>2.4.3</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.asciidoctor</groupId>
             <artifactId>asciidoctorj-pdf</artifactId>
             <version>1.5.4</version>
-        </dependency>
-        <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-            <version>1.10.10</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency> <!-- enables mocking of classes without default constructor (together with ByteBuddy or CGLIB) -->
-            <groupId>org.objenesis</groupId>
-            <artifactId>objenesis</artifactId>
-            <version>3.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -244,12 +239,6 @@
             <properties>
                 <driver.chrome>${project.basedir}/src/test/driver/chromedriver89.exe</driver.chrome>
                 <driver.firefox>${project.basedir}/src/test/driver/geckodriver0.29.1.exe</driver.firefox>
-            </properties>
-        </profile>
-        <profile>
-            <id>firefox</id>
-            <properties>
-                <driver>firefox</driver>
             </properties>
         </profile>
     </profiles>
