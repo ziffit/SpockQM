@@ -6,12 +6,8 @@ import de.fx.spockqm.pages.KontaktPage
 import de.fx.spockqm.pages.KontaktformularPage
 import de.fx.spockqm.pages.WebAutomationMobileTestingPage
 import geb.module.Checkbox
-import geb.spock.GebReportingSpec
-import org.openqa.selenium.interactions.Actions
 
-import java.awt.Color
-
-class WebsiteSpec extends AbstractSpec {
+class WebsiteSpec extends AbstractSpecification {
 
     def "Test Case 1"() {
         when: "(1) the URL www.qualityminds.de is opened,"

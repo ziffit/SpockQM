@@ -4,7 +4,7 @@ import geb.navigator.Navigator
 import geb.spock.GebReportingSpec
 import org.openqa.selenium.interactions.Actions
 
-class AbstractSpec extends GebReportingSpec {
+class AbstractSpecification extends GebReportingSpec {
 
     def activePage
     def actions = new Actions(driver)
