@@ -49,7 +49,7 @@ class GebConfigHelper {
             default:
                 webdriver = createChromeDriver(headless)
         }
-        webdriver.manage().window().setSize(new Dimension(1024, 650))
+        webdriver.manage().window().setSize(new Dimension(1024, 800))
         return webdriver
     }
 
