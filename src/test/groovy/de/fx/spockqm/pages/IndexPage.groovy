@@ -4,6 +4,9 @@ import de.fx.spockqm.modules.Bottomnavigation
 import de.fx.spockqm.modules.Topnavigation
 import geb.Page
 
+/**
+ * Indexpage
+ */
 class IndexPage extends Page {
     static at = { title == "Qualitätssicherung in agiler Softwareentwicklung | QualityMinds" }
     static content = {

@@ -4,6 +4,9 @@ import de.fx.spockqm.modules.Bottomnavigation
 import de.fx.spockqm.modules.Topnavigation
 import geb.Page
 
+/**
+ * Kontaktpage
+ */
 class KontaktPage extends Page {
     static at = { title == "Kontakt & Anfahrt | QualityMinds" }
     static content = {

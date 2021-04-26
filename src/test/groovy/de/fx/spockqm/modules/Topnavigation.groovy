@@ -2,6 +2,10 @@ package de.fx.spockqm.modules
 
 import geb.Module
 
+/**
+ * Module for the Topnavigation.
+ * Base is: #top-menu-nav
+ */
 class Topnavigation extends Module {
     static base = { $("#top-menu-nav") }
     static content = {

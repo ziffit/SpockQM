@@ -4,6 +4,9 @@ import de.fx.spockqm.modules.Bottomnavigation
 import de.fx.spockqm.modules.Topnavigation
 import geb.Page
 
+/**
+ * Web, Automation & Mobile Testing page
+ */
 class WebAutomationMobileTestingPage extends Page {
     static at = { title == "Web, Automation & Mobile Testing | QualityMinds" }
     static content = {

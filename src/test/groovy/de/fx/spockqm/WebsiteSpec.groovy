@@ -7,6 +7,9 @@ import de.fx.spockqm.pages.KontaktformularPage
 import de.fx.spockqm.pages.WebAutomationMobileTestingPage
 import geb.module.Checkbox
 
+/**
+ * Spec for testing the QualityMinds Homepage
+ */
 class WebsiteSpec extends AbstractSpecification {
 
     def "Test Case 1"() {

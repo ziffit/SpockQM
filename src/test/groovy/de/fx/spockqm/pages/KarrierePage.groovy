@@ -4,6 +4,9 @@ import de.fx.spockqm.modules.Bottomnavigation
 import de.fx.spockqm.modules.Topnavigation
 import geb.Page
 
+/**
+ * Karrierepage
+ */
 class KarrierePage extends Page {
     static at = { title == "Karriere | QualityMinds" }
     static content = {

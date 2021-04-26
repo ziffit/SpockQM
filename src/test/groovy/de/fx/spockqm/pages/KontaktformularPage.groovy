@@ -4,6 +4,9 @@ package de.fx.spockqm.pages
 import de.fx.spockqm.modules.Topnavigation
 import geb.Page
 
+/**
+ * KontaktformularPage. Contains a form for applications.
+ */
 class KontaktformularPage extends Page {
     static at = { title == "Bewerbungsformular | QualityMinds" }
     static content = {

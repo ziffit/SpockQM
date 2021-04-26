@@ -6,9 +6,10 @@ import org.asciidoctor.SafeMode
 
 import static org.asciidoctor.Asciidoctor.Factory.create
 import static org.asciidoctor.OptionsBuilder.options
+
 /**
  * Simple Class to convert the AsciiDoc Reports to PDFs.
- * Hardcoded names should be removed.
+ * ToDo: Hardcoded names should be removed
  */
 class AsciidocToPdf {
     static void convert() {
