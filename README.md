@@ -2,11 +2,12 @@
 ## description
 This Project includes a testsuite to test the QM-Website.
 The Tests are written with Geb/Spock.
-The Tests are executed with Chrome and Firefox.
+The Tests are executed with Chrome and Firefox ().
 A report ist generated at the end.
 The project can be run with Linux, or Windows. MacOs is not supported.
 
 Please use jdk15 or older. Jdk16 is not compatible with the used Groovy-Version.
+The testsuite was developed using Chrome 89 and Firefox 88.
 
 ## usage
 Just call `mvn clean install` to execute the testsuite.
