@@ -6,6 +6,8 @@ The Tests are executed with Chrome and Firefox.
 A report ist generated at the end.
 The project can be run with Linux, or Windows. MacOs is not supported.
 
+Please use jdk15 or older. Jdk16 is not compatible with the used Groovy-Version.
+
 ## usage
 Just call `mvn clean install` to execute the testsuite.
 `mvn clean install -Ddriver.headless=false` to execute the suite in non-Headless mode.
