@@ -8,6 +8,7 @@ import geb.Page
  * Indexpage
  */
 class IndexPage extends Page {
+    static url = ""
     static at = { title == "Qualitätssicherung in agiler Softwareentwicklung | QualityMinds" }
     static content = {
         topnavigation { module Topnavigation}

@@ -96,7 +96,7 @@
                             </systemPropertyVariables>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!--execution>
                         <id>Firefox</id>
                         <goals>
                             <goal>integration-test</goal>
@@ -112,7 +112,7 @@
                                 <com.athaydes.spockframework.report.outputDir>${project.build.directory}/spock-reports/firefox</com.athaydes.spockframework.report.outputDir>
                             </systemPropertyVariables>
                         </configuration>
-                    </execution>
+                    </execution-->
                 </executions>
             </plugin>
             <plugin>
@@ -136,6 +136,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.romankh3</groupId>
+            <artifactId>image-comparison</artifactId>
+            <version>4.4.0</version>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>

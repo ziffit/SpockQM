@@ -26,6 +26,7 @@ class WebsiteSpec extends AbstractSpecification {
         then: "the Page 'Kontakt &  Anfahrt' is displayed."
         at KontaktPage
         report "2 - Kontakt page"
+        reportAndCompare "2 - Kontakt page", "compare0002"
 
         expect: "(3) that the page contains the email address 'hello@qualityminds.de'."
         activePage.maincontent.text() =~ /.*hello@qualityminds.de.*/
