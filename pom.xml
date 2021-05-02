@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>de.fx</groupId>
     <artifactId>SpockQM</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -23,7 +23,27 @@
         <jruby.version>9.2.13.0</jruby.version>
     </properties>
 
+
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.22.2</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Spec</include>
+                        </includes>
+                        <systemPropertyVariables>
+                            <webdriver.chrome.driver>${driver.chrome}</webdriver.chrome.driver>
+                            <webdriver.gecko.driver>${driver.firefox}</webdriver.gecko.driver>
+                            <driver.headless>${driver.headless}</driver.headless>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -64,57 +84,6 @@
             </plugin>
             <!-- Optional plugins for using Spock -->
             <!-- Only required if names of spec classes don't match default Surefire patterns (`*Test` etc.) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Spec</include>
-                    </includes>
-                    <systemPropertyVariables>
-                        <webdriver.chrome.driver>${driver.chrome}</webdriver.chrome.driver>
-                        <webdriver.gecko.driver>${driver.firefox}</webdriver.gecko.driver>
-                        <driver.headless>${driver.headless}</driver.headless>
-                    </systemPropertyVariables>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>Chrome</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>false</skip>
-                            <skipExec>false</skipExec>
-                            <reportNameSuffix>chrome</reportNameSuffix>
-                            <environmentVariables>
-                                <driver.active>chrome</driver.active>
-                            </environmentVariables>
-                            <systemPropertyVariables>
-                                <com.athaydes.spockframework.report.outputDir>${project.build.directory}/spock-reports/chrome</com.athaydes.spockframework.report.outputDir>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </execution>
-                    <!--execution>
-                        <id>Firefox</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>false</skip>
-                            <skipExec>false</skipExec>
-                            <reportNameSuffix>firefox</reportNameSuffix>
-                            <environmentVariables>
-                                <driver.active>firefox</driver.active>
-                            </environmentVariables>
-                            <systemPropertyVariables>
-                                <com.athaydes.spockframework.report.outputDir>${project.build.directory}/spock-reports/firefox</com.athaydes.spockframework.report.outputDir>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </execution-->
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -252,6 +221,71 @@
 
     <profiles>
         <profile>
+            <id>chrome</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>false</skip>
+                                    <skipExec>false</skipExec>
+                                    <reportNameSuffix>chrome</reportNameSuffix>
+                                    <environmentVariables>
+                                        <driver.active>chrome</driver.active>
+                                    </environmentVariables>
+                                    <systemPropertyVariables>
+                                        <com.athaydes.spockframework.report.outputDir>
+                                            ${project.build.directory}/spock-reports/chrome
+                                        </com.athaydes.spockframework.report.outputDir>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>firefox</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>false</skip>
+                                    <skipExec>false</skipExec>
+                                    <reportNameSuffix>firefox</reportNameSuffix>
+                                    <environmentVariables>
+                                        <driver.active>firefox</driver.active>
+                                    </environmentVariables>
+                                    <systemPropertyVariables>
+                                        <com.athaydes.spockframework.report.outputDir>
+                                            ${project.build.directory}/spock-reports/firefox
+                                        </com.athaydes.spockframework.report.outputDir>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>windows</id>
             <activation>
                 <os>
@@ -261,6 +295,18 @@
             <properties>
                 <driver.chrome>${project.basedir}/src/test/driver/chromedriver89.exe</driver.chrome>
                 <driver.firefox>${project.basedir}/src/test/driver/geckodriver0.29.1.exe</driver.firefox>
+            </properties>
+        </profile>
+        <profile>
+            <id>macOs</id>
+            <activation>
+                <os>
+                    <family>macOs</family>
+                </os>
+            </activation>
+            <properties>
+                <driver.chrome>${project.basedir}/src/test/driver/chromedriverMacOs</driver.chrome>
+                <driver.firefox>${project.basedir}/src/test/driver/geckodriverMacOs</driver.firefox>
             </properties>
         </profile>
     </profiles>
