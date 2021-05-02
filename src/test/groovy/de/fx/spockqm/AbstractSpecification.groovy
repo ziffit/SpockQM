@@ -38,9 +38,13 @@ class AbstractSpecification extends GebReportingSpec {
         def expectedImage = ImageComparisonUtil.readImageFromResources(expectedImagePath)
         def actualImage = ImageComparisonUtil.readImageFromResources(actualImagePath)
 
-        def resultDestination = new File( "target/Result-${templateImageIdentifier}.png")
-        ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage,resultDestination).setRectangleLineWidth(3).compareImages()
-        assert imageComparisonResult.getImageComparisonState() == ImageComparisonState.MATCH
+        def resultDestination = new File("target/Result-${templateImageIdentifier}.png")
+        ImageComparisonResult imageComparisonResult = new ImageComparison(expectedImage, actualImage, resultDestination).setRectangleLineWidth(3).compareImages()
+        assert imageComparisonResult.getImageComparisonState() == ImageComparisonState.MATCH: "Pictures did not Match. " +
+                "Difference is ${imageComparisonResult.differencePercent}%." +
+                "${imageComparisonResult.rectangles ? imageComparisonResult.rectangles.size() : 0} rectangles. " +
+                "${imageComparisonResult.rectangles ? "Report-image Location: '$resultDestination'." : ""}" +
+                "\nATTENTION: Different Browsers/Platforms and Headless-Settings generate different images/image-sizes!"
         return true
     }
 

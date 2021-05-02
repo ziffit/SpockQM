@@ -3,10 +3,12 @@ package de.fx.spockqm
 
 import de.fx.spockqm.pages.IndexPage
 import de.fx.spockqm.pages.KontaktPage
+import org.junit.Ignore
 
 /**
  * Dummy Spec to show failings tests in the report.
  */
+@Ignore
 class XFailingSpec extends AbstractSpecification {
 
     def "Test Case 4"() {

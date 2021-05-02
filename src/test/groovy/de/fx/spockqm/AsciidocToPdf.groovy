@@ -14,9 +14,9 @@ import static org.asciidoctor.OptionsBuilder.options
 class AsciidocToPdf {
     static void convert() {
         println("########## Convert AsciiDoc Reports to PDFs ###########")
+        def driver = System.getProperty("driver.active")
         Asciidoctor asciidoctor = create()
-        createPdf(asciidoctor, "target/spock-reports/chrome/report.ad", "report-chrome.pdf")
-        createPdf(asciidoctor, "target/spock-reports/firefox/report.ad", "report-firefox.pdf")
+        createPdf(asciidoctor, "target/spock-reports/$driver/report.ad", "report-${driver}.pdf")
     }
 
     private static createPdf(Asciidoctor asciidoctor, String asciiDocPath, String pdfName) {

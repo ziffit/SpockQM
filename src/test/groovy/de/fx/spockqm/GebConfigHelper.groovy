@@ -19,10 +19,11 @@ class GebConfigHelper {
      * @param defaultValue default-value to use
      */
     static checkHeadless(boolean defaultValue) {
-        def headless = System.getProperty("headless")
+        def headless = System.getProperty("driver.headless")
         if (headless == null) {
-            System.setProperty("headless", defaultValue.toString())
+            System.setProperty("driver.headless", defaultValue.toString())
         }
+        println("headless: ${System.getProperty("driver.headless")}")
     }
 
     /**
@@ -35,13 +36,14 @@ class GebConfigHelper {
         if (driver == null) {
             System.setProperty("driver.active", defaultValue)
         }
+        println("Active Driver: ${System.getProperty("driver.active")}")
     }
 
     /**
      * Creates Driver-Specific Reports-Directory, and sets spock-reports System-Property for this directory.
      */
     static handleReportsDir() {
-        def reportsDir = 'target/spock-reports/' + System.getenv("driver.active")
+        def reportsDir = 'target/spock-reports/' + System.getProperty("driver.active")
         System.setProperty("com.athaydes.spockframework.report.outputDir", reportsDir)
         return reportsDir
     }
@@ -54,14 +56,18 @@ class GebConfigHelper {
      */
     static createDriver() {
         def webdriver
-        switch (System.getenv("driver.active")) {
+        switch (System.getProperty("driver.active")) {
             case "firefox":
                 webdriver = createFirefoxDriver()
                 break
             default:
                 webdriver = createChromeDriver()
         }
-        webdriver.manage().window().setSize(new Dimension(1024, 800))
+        if(System.getProperty("driver.headless")){
+            webdriver.manage().window().setSize(new Dimension(1016, 665))
+        } else {
+            webdriver.manage().window().setSize(new Dimension(1024, 800))
+        }
         return webdriver
     }
 

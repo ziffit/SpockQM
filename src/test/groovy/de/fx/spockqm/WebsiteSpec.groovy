@@ -1,41 +1,41 @@
 package de.fx.spockqm
 
-import de.fx.spockqm.pages.IndexPage
-import de.fx.spockqm.pages.KarrierePage
-import de.fx.spockqm.pages.KontaktPage
-import de.fx.spockqm.pages.KontaktformularPage
-import de.fx.spockqm.pages.WebAutomationMobileTestingPage
+import de.fx.spockqm.pages.*
 import geb.module.Checkbox
+import org.openqa.selenium.Cookie
 
 /**
  * Spec for testing the QualityMinds Homepage
  */
 class WebsiteSpec extends AbstractSpecification {
 
+    def setupSpec() {
+        to IndexPage
+        def options = driver.manage()
+        if (!options.getCookieNamed("cookieconsent_status")) {
+            options.addCookie(new Cookie("cookieconsent_status", "allow", ".qualityminds.de", "/", null))
+        }
+    }
+
+
     def "Test Case 1"() {
         when: "(1) the URL www.qualityminds.de is opened,"
-        go "http://www.qualityminds.de"
-        activePage = page IndexPage
+        activePage = to IndexPage
         then: "the QualityMinds indexpage is open."
-        at IndexPage
         report "1 - Index page"
 
         when: "(2) 'Kontakt' at the top navigation is clicked,"
-        activePage = activePage.topnavigation.kontakt.click(KontaktPage)
-        activePage = page KontaktPage
+        activePage.topnavigation.kontakt.click(KontaktPage)
+        activePage = at KontaktPage
         then: "the Page 'Kontakt &  Anfahrt' is displayed."
-        at KontaktPage
-        report "2 - Kontakt page"
         reportAndCompare "2 - Kontakt page", "compare0002"
 
         expect: "(3) that the page contains the email address 'hello@qualityminds.de'."
         activePage.maincontent.text() =~ /.*hello@qualityminds.de.*/
 
         when: "(4) Navigate back to 'www.qualityminds.de'"
-        to IndexPage
-        activePage = page IndexPage
+        activePage = to IndexPage
         then: "the QualityMinds indexpage is displayed."
-        at IndexPage
         report "4 - Index page"
 
         when: "(5) 'Kontakt & Anfahrt' in the bottom navigation is clicked,"
@@ -49,10 +49,8 @@ class WebsiteSpec extends AbstractSpecification {
 
     def "Test Case 2"() {
         when: "(1) the URL www.qualityminds.de is opened,"
-        go "http://www.qualityminds.de"
-        activePage = page IndexPage
+        activePage = to IndexPage
         then: "the QualityMinds indexpage is open."
-        at IndexPage
         report "1 - Index page"
 
         when: "(2) 'Portfolio' is hovered at the top navigation bar,"
@@ -63,7 +61,7 @@ class WebsiteSpec extends AbstractSpecification {
 
         when: "(3,4) 'Web, Automation & Mobile Testing' sub option is clicked,"
         activePage.topnavigation.portfolio_automation.click()
-        activePage = page WebAutomationMobileTestingPage
+        activePage = at WebAutomationMobileTestingPage
         then: "'Web, Automation & Mobile Testing' page is displayed"
         at WebAutomationMobileTestingPage
         and: "'Portfolio' item of the top bar menu is highlighted (color is rgb(130, 168, 69, 1))."
@@ -93,24 +91,20 @@ class WebsiteSpec extends AbstractSpecification {
 
     def "Test Case 3"() {
         when: "(1) the URL www.qualityminds.de is opened,"
-        go "http://www.qualityminds.de"
-        activePage = page IndexPage
+        activePage = to IndexPage
         then: "the QualityMinds indexpage is open."
-        at IndexPage
         report "1 - Index page"
 
         when: "(2) 'Karriere' is clicked in the top navigation bar,"
         activePage.topnavigation.karriere.click()
-        activePage = page KarrierePage
+        activePage = at KarrierePage
         then: "the 'Karriere' page is open."
-        at KarrierePage
         report "2 - Karriere page"
 
         when: "(3) button 'Bewirb Dich Jetzt!' is clicked,"
-        activePage.button_application.click()
-        activePage = page KontaktformularPage
+        activePage.button_application.click(KontaktformularPage)
+        activePage = at KontaktformularPage
         then: "the application form is opened."
-        at KontaktformularPage
         report "3 - Application form"
 
         when: "(4,5) button 'Jetzt bewerben' is clicked,"
